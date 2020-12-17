@@ -30,7 +30,8 @@ export default new Vuex.Store({
     setFeedbackType: (state, value) => {
       console.log('Mutation.setFeedbackType:', value)
       state.feedbackType = value;
-      state.feedback = {};
+      delete state.visibleFeedback;
+      delete state.audibleFeedback;
       state[state.feedbackType] = state.feedbackValue;
       console.log(state)
     },
@@ -54,6 +55,29 @@ export default new Vuex.Store({
         console.log('Error:', err);
       }
       return err
+    },
+    /**
+     * Get array of all errors
+     * returns {array}
+     */
+    getErrors: ({state}) => {
+      let errors = {};
+
+      let obj = {
+        timeout: state.timeout,
+        deviceName: state.deviceName,
+        audibleFeedback: state.audibleFeedback,
+        visibleFeedback: state.visibleFeedback
+      }
+      while (Configuration.verify(obj)) {
+        let tmp = Configuration.verify(obj).split(':');
+        errors[tmp[0]] = tmp[1];
+        delete obj[tmp[0]];
+      }
+
+      console.log(errors);
+
+      return errors;
     },
     /**
      * Save configuration to file
@@ -98,6 +122,8 @@ export default new Vuex.Store({
         context.commit('setFeedbackValue', msg.visibleFeedback);
         context.commit('setFeedbackType', 'visibleFeedback')
       }
+
+      console.log(context.state);
     }
 
   }

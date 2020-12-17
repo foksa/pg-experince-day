@@ -7,7 +7,6 @@
     </section>
     <file-picker></file-picker>
     <configuration-editor></configuration-editor>
-    <button class="button" @click="save">Save</button>
   </div>
 </template>
 
@@ -22,16 +21,7 @@ export default {
     FilePicker
   },
   methods: {
-    async save() {
-      let err = await this.$store.dispatch('validate');
-      if (err) {
-        alert('Invalid format')
-      }
-      else {
-        this.$store.dispatch('save');
-      }
 
-    }
   }
 }
 </script>
