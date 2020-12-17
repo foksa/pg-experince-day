@@ -8,12 +8,38 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    feedbackType:'visibleFeedback',
+    feedbackValue:0,
     timeout:0,
     deviceName:'',
+    feedback: {
+      visibleFeedback: 0
+    }
   },
   getters: {
   },
   mutations: {
+    setTimeout: (state, value) => {
+      console.log('Mutation.setTimeout:', value)
+      state.timeout = value;
+    },
+    setDeviceName: (state, value) => {
+      console.log('Mutation.setDeviceName:', value)
+      state.deviceName = value;
+    },
+    setFeedbackType: (state, value) => {
+      console.log('Mutation.setFeedbackType:', value)
+      state.feedbackType = value;
+      state.feedback = {};
+      state[state.feedbackType] = state.feedbackValue;
+      console.log(state)
+    },
+    setFeedbackValue: (state, value) => {
+      console.log('Mutation.setFeedbackValue:', value)
+      state.feedbackValue = value;
+      state[state.feedbackType] = value;
+    }
+
   },
   actions: {
     /**
@@ -61,6 +87,17 @@ export default new Vuex.Store({
 
       let msg = Configuration.decode(arr);
       console.log('Loaded data',msg);
+      context.commit('setTimeout', msg.timeout);
+      context.commit('setDeviceName', msg.deviceName);
+
+      if (msg.audibleFeedback) {
+        context.commit('setFeedbackValue', msg.audibleFeedback);
+        context.commit('setFeedbackType', 'audibleFeedback')
+      }
+      if (msg.visibleFeedback) {
+        context.commit('setFeedbackValue', msg.visibleFeedback);
+        context.commit('setFeedbackType', 'visibleFeedback')
+      }
     }
 
   }

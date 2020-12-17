@@ -2,17 +2,17 @@
   <div>
     <div class="control">
       <label class="radio">
-        <input type="radio" value="visibleFeedback" v-model="picked" @click="selectFeedbackType">
+        <input type="radio" value="visibleFeedback" v-model="feedbackType">
         Visible Feedback
       </label>
       <label class="radio">
-        <input type="radio" value="audibleFeedback" v-model="picked" @click="selectFeedbackType">
+        <input type="radio" value="audibleFeedback" v-model="feedbackType">
         Audible feedback
       </label>
     </div>
     <div class="control">
       <div class="select">
-        <select v-model="feedbackValue" @change="updateFeedbackValue">
+        <select v-model="feedbackValue">
           <template>
             <option  v-for="(value, key) in feedbackOptions" v-bind:key="key" :value="value">{{key}}</option>
           </template>
@@ -27,8 +27,6 @@ export default {
   name: "FeedbackEditor",
   data() {
     return {
-      picked: 'visibleFeedback',
-      feedbackValue: 0,
       feedbackData: {
         audibleFeedback: {
           BEEP: 0,
@@ -45,14 +43,28 @@ export default {
     }
   },
   computed: {
+
+    feedbackType:{
+      get() {
+        return this.$store.state.feedbackType;
+      },
+      set(val) {
+        this.$store.commit('setFeedbackType', val)
+      }
+    },
+    feedbackValue:{
+      get() {
+        return this.$store.state.feedbackValue;
+      },
+      set(val) {
+        this.$store.commit('setFeedbackValue', val)
+      }
+    },
     feedbackOptions: function() {
-      return this.feedbackData[this.picked]
+      return this.feedbackData[this.feedbackType]
     }
   },
   methods: {
-    selectFeedbackType: function () {
-      this.feedbackValue = 0;
-    }
   }
 }
 </script>
