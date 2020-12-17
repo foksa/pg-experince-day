@@ -1,0 +1,21 @@
+//configuration.proto
+syntax = "proto3";
+message Configuration {
+    int32 timeout = 1; // Number of seconds after which the Scanner turns to Standby
+    string device_name = 2; // The Name of the Scanner
+    oneof feedback {
+        AudibleFeedback audible_feedback= 3; // Beeping
+        VisibleFeedback visible_feedback = 4; // LED flashing
+    }
+    enum AudibleFeedback {
+        BEEP = 0;
+        BUUP_BUUP = 1;
+        BEEP_BUUP = 2;
+        BEEP_BEEP = 3;
+    }
+    enum VisibleFeedback {
+        GREEN = 0;
+        RED = 1;
+        BLUE = 2;
+    }
+}
