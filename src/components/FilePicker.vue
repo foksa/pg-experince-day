@@ -27,7 +27,7 @@ export default {
       let fileReader = new FileReader();
 
       fileReader.onload = (event) => {
-        this.$store.dispatch('parseData', event.target.result)
+        this.$store.dispatch('parse', event.target.result)
       };
 
       if (e.target.files[0]) {
